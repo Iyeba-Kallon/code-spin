@@ -1,65 +1,98 @@
-import Image from "next/image";
+'use client';
+
+import { useGameState } from '@/hooks/useGameState';
+import { Spinner } from '@/components/Spinner';
+import { ChallengeCard } from '@/components/ChallengeCard';
+import { Trophy, Zap, ShieldAlert, Cpu } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Home() {
+  const {
+    score,
+    level,
+    streak,
+    currentChallenge,
+    isBossMode,
+    isSpinning,
+    spin,
+    completeChallenge,
+  } = useGameState();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className={`min-h-screen flex flex-col items-center justify-center p-4 transition-colors duration-1000 ${isBossMode ? 'boss-gradient' : 'hacker-gradient'}`}>
+      {/* Background decoration */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden h-screen">
+        <div className="absolute top-1/4 -left-20 w-80 h-80 bg-hacker-green/5 blur-[120px] rounded-full" />
+        <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-blue-500/5 blur-[120px] rounded-full" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-4xl flex flex-col items-center gap-12">
+        {/* Header / Stats */}
+        <div className="w-full flex flex-wrap justify-center gap-8 md:gap-16">
+          <StatBox icon={<Trophy className="w-5 h-5" />} label="SCORE" value={score} color="text-hacker-green" />
+          <StatBox icon={<Cpu className="w-5 h-5" />} label="LEVEL" value={level} color="text-blue-400" />
+          <StatBox icon={<Zap className="w-5 h-5" />} label="STREAK" value={streak} color="text-yellow-400" />
+        </div>
+
+        <div className="text-center">
+          <h1 className="text-4xl md:text-6xl font-black font-mono tracking-tighter mb-2 italic">
+            CODE_SPIN<span className="text-hacker-green animate-pulse">.EXE</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-gray-500 font-mono text-sm uppercase tracking-[0.3em]">
+            Daily Coding Challenges for Elite Devs
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Action Area */}
+        <div className="w-full flex flex-col items-center min-h-[400px]">
+          <AnimatePresence mode="wait">
+            {!currentChallenge ? (
+              <motion.div
+                key="spinner"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+              >
+                <Spinner isSpinning={isSpinning} onSpin={spin} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="challenge"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
+                className="w-full flex justify-center"
+              >
+                <ChallengeCard
+                  challenge={currentChallenge}
+                  isBossMode={isBossMode}
+                  onComplete={completeChallenge}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      </main>
+
+        {/* Footer/Motivation */}
+        <div className="mt-8 flex items-center gap-2 text-xs font-mono text-gray-600 uppercase tracking-widest">
+          <ShieldAlert className="w-4 h-4" />
+          <span>System Optimized // Session Active // Stay Sharp</span>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function StatBox({ icon, label, value, color }: { icon: React.ReactNode, label: string, value: number, color: string }) {
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <div className="flex items-center gap-2 text-gray-500 text-xs font-mono font-bold tracking-widest">
+        {icon}
+        {label}
+      </div>
+      <div className={`text-3xl font-black font-mono ${color}`}>
+        {value.toString().padStart(2, '0')}
+      </div>
     </div>
   );
 }
