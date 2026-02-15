@@ -30,12 +30,14 @@ export const useGameState = () => {
         const newLevel = Math.floor(score / 100) + 1;
         if (newLevel > level) {
             setLevel(newLevel);
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#10b981', '#3b82f6', '#8b5cf6'],
-            });
+            if (typeof window !== 'undefined') {
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#10b981', '#3b82f6', '#8b5cf6'],
+                });
+            }
         }
     }, [score, level]);
 
