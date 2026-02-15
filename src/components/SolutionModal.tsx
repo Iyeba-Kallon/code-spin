@@ -52,7 +52,7 @@ export const SolutionModal: React.FC<SolutionModalProps> = ({
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
                         className={cn(
-                            "fixed z-50 w-full max-w-2xl bg-hacker-card border-2 rounded-xl shadow-2xl overflow-hidden",
+                            "fixed z-50 w-full max-w-2xl max-h-[90vh] flex flex-col bg-hacker-card border-2 rounded-xl shadow-2xl overflow-hidden",
                             isBossMode ? "border-boss-red shadow-boss-red/20" : "border-hacker-green shadow-hacker-green/20"
                         )}
                         style={{
@@ -63,7 +63,7 @@ export const SolutionModal: React.FC<SolutionModalProps> = ({
                     >
                         {/* Header */}
                         <div className={cn(
-                            "flex items-center justify-between px-6 py-4 border-b",
+                            "flex items-center justify-between px-6 py-4 border-b shrink-0",
                             isBossMode ? "border-boss-red/30 bg-boss-red/10" : "border-hacker-green/30 bg-hacker-green/5"
                         )}>
                             <div className="flex items-center gap-2">
@@ -82,7 +82,7 @@ export const SolutionModal: React.FC<SolutionModalProps> = ({
                         </div>
 
                         {/* Content */}
-                        <div className="p-6 space-y-6">
+                        <div className="p-6 space-y-6 overflow-y-auto custom-scrollbar">
                             <div className="space-y-2">
                                 <label className="text-xs font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                                     <Terminal className="w-4 h-4" />
@@ -117,7 +117,7 @@ export const SolutionModal: React.FC<SolutionModalProps> = ({
                         </div>
 
                         {/* Footer */}
-                        <div className="px-6 py-4 border-t border-gray-800 bg-black/20 flex justify-end gap-3">
+                        <div className="px-6 py-4 border-t border-gray-800 bg-black/20 flex justify-end gap-3 shrink-0">
                             <button
                                 onClick={onClose}
                                 className="px-4 py-2 rounded-lg font-mono text-sm text-gray-400 hover:text-white transition-colors"
