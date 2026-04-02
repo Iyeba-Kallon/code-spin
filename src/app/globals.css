@@ -1,23 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Orbitron:wght@400;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #050505;
-  --foreground: #10b981;
+  --background: 240 10% 3.9%;
+  --foreground: 160 84% 39%;
+  
+  --hacker-green: 160 84% 39%;
+  --hacker-green-glow: 160 84% 39% / 0.3;
+  --boss-red: 0 84% 60%;
+  --boss-red-glow: 0 84% 60% / 0.3;
+  
+  --card: 240 10% 5%;
+  --card-border: 240 5% 15%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-mono), monospace;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: 'Inter', sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-.hacker-gradient {
-  background: radial-gradient(circle at 50% 50%, #111111 0%, #050505 100%);
+h1, h2, h3, .font-orbitron {
+  font-family: 'Orbitron', sans-serif;
 }
 
-.boss-gradient {
-  background: radial-gradient(circle at 50% 50%, #1a0505 0%, #050505 100%);
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-hacker {
+  background: hsla(var(--hacker-green) / 0.05);
+  border: 1px solid hsla(var(--hacker-green) / 0.15);
+  box-shadow: 0 0 40px hsla(var(--hacker-green) / 0.1);
+}
+
+.glass-boss {
+  background: hsla(var(--boss-red) / 0.05);
+  border: 1px solid hsla(var(--boss-red) / 0.2);
+  box-shadow: 0 0 60px hsla(var(--boss-red) / 0.15);
+}
+
+.text-glow-green {
+  text-shadow: 0 0 10px hsla(var(--hacker-green) / 0.5);
+}
+
+.text-glow-red {
+  text-shadow: 0 0 15px hsla(var(--boss-red) / 0.6);
+}
+
+.cyber-grid {
+  background-image: 
+    linear-gradient(to right, hsla(var(--hacker-green) / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, hsla(var(--hacker-green) / 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.cyber-grid-boss {
+  background-image: 
+    linear-gradient(to right, hsla(var(--boss-red) / 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, hsla(var(--boss-red) / 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
